@@ -31,6 +31,11 @@ class OverFlowTest(unittest.TestCase):
         self.root_glass.fill(0.5)
         self.assertEqual(self.MAX_CAPACITY_LITRES, self.root_glass.water)
 
+    def test_visualize(self):
+        """ Visualize the glass graph. """
+        self.root_glass.fill(4)
+        overflow.illustrate(self.root_glass)
+
     def test_overflow(self):
         result = overflow.calculate(i=0, j=0, k=0)
         self.assertEqual(0, result)
