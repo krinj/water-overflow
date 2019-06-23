@@ -19,6 +19,11 @@ def calculate(i: int=0, j: int=0, k: float=0) -> float:
         j: the 'column' of the glass
         k: the amount of water (litres) poured into the top glass.
      """
+    root = Glass()
+    root.fill(k)
+
+    # Traverse to the (i, j) node.
+
     return 0
 
 

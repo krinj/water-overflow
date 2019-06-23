@@ -14,6 +14,14 @@ __email__ = "juangbhanich.k@gmail.com"
 __version__ = "0.0.0"
 
 
+class TestData:
+    def __init__(self, i: int, j: int, k: float, y: float):
+        self.i = i
+        self.j = j
+        self.k = k
+        self.y = y  # Expected output.
+
+
 class OverFlowTest(unittest.TestCase):
 
     MAX_CAPACITY_LITRES: float = 0.25  # Capacity per glass in litres.
@@ -38,5 +46,18 @@ class OverFlowTest(unittest.TestCase):
         self.assertEqual(6, total_water)
 
     def test_overflow(self):
-        result = overflow.calculate(i=0, j=0, k=0)
-        self.assertEqual(0, result)
+        dataset = [
+            TestData(i=0, j=0, k=0.0, y=0.0),
+            TestData(i=2, j=1, k=1.0, y=0.12),
+            TestData(i=2, j=0, k=1.0, y=0.06)
+        ]
+
+        for data in dataset:
+            # Check we get the right results for the input.
+            result = overflow.calculate(i=data.i, j=data.j, k=data.k)
+            self.assertEqual(data.y, result)
+
+            # Also check that the water total is correct.
+            self.root_glass.fill(data.k)
+            _, total_water = overflow.illustrate(self.root_glass)
+            self.assertAlmostEqual(data.k, total_water)

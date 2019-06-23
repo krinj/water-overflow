@@ -35,8 +35,12 @@ class Glass:
 
             # If there is overflow, ensure and fill the child nodes too.
             if overflow > 0:
+
+                # Ensure that left and right children exist for the next operation.
                 left_child = node._ensure_child(left=True)
                 right_child = node._ensure_child(left=False)
+
+                # Append them to the queue so we can continue the process.
                 q.append((left_child, overflow/2))
                 q.append((right_child, overflow/2))
 
