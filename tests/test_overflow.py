@@ -33,7 +33,7 @@ class OverFlowTest(unittest.TestCase):
 
     def test_visualize(self):
         """ Visualize the glass graph. """
-        self.root_glass.fill(4)
+        self.root_glass.fill(1)
         overflow.illustrate(self.root_glass)
 
     def test_overflow(self):

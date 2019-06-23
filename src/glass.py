@@ -3,6 +3,7 @@
 """
 A representation of a single 'glass'. It is essentially an extended binary tree node.
 """
+from collections import deque
 
 __author__ = "Jakrin Juangbhanich"
 __email__ = "juangbhanich.k@gmail.com"
@@ -24,6 +25,27 @@ class Glass:
     def fill(self, k: float):
         """ Fill this glass with k litres of water. """
 
+        # BFS Fill.
+        q = deque()
+        q.append((self, k))
+
+        while len(q) > 0:
+            node, amount = q.popleft()
+            overflow = node._fill(amount)
+
+            # If there is overflow, ensure and fill the child nodes too.
+            if overflow > 0:
+                left_child = self._ensure_child(left=True)
+                right_child = self._ensure_child(left=False)
+                q.append((left_child, overflow/2))
+                q.append((right_child, overflow/2))
+
+    # ===================================================================================================
+    # Private/Support functions.
+    # ===================================================================================================
+
+    def _fill(self, k: float) -> float:
+        """ Fill this glass with k litres and return the overflow amount."""
         # Work out how much can go into this glass, and how much shall overflow.
         remaining_capacity = self.capacity - self.water
         overflow = max(0.0, k - remaining_capacity)
@@ -31,41 +53,35 @@ class Glass:
 
         # Fill this glass.
         self.water += fill_amount
+        return overflow
 
-        # Fill the left and right child with half the overflow each.
-        half_overflow = overflow/2
-        self._fill_child(left=True, k=half_overflow)
-        self._fill_child(left=False, k=half_overflow)
-
-    def _fill_child(self, left: bool=True, k: float=0):
-        """ Fill the child glass with k litres of water. """
-
-        if k <= 0:
-            return
-
-        # We need to create the child if it doesn't exist.
-        self._ensure_child(left)
-        child = self.left_child if left else self.right_child
-        child.fill(k)
-
-    def _ensure_child(self, left: bool=True):
+    def _ensure_child(self, left: bool=True) -> 'Glass':
         """ Ensure that a child exists. If it does not, create it."""
 
         # If the child already exists, then we are done.
         if left and self.left_child is not None:
-            return
+            return self.left_child
         elif not left and self.right_child is not None:
-            return
+            return self.right_child
 
         # Create the child and refer to it.
+        return self._create_child(left)
+
+    def _create_child(self, left: bool) -> 'Glass':
+        """ Create the child glass and ensure that all references are set up properly. """
         child = Glass(self.capacity)
+
+        # Bind the child. (That doesn't sound right, does it?)
         if left:
+            child.right_parent = self
             self.left_child = child
         else:
+            child.left_parent = self
             self.right_child = child
 
         # It must also be bound to its siblings.
         self._link_child(left)
+        return child
 
     def _link_child(self, left: bool) -> None:
         """ After a child has been created, it should also be the child of the sibling node. """
