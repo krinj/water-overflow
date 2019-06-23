@@ -3,6 +3,7 @@
 """
 A representation of a single 'glass'. It is essentially an extended binary tree node.
 """
+
 from collections import deque
 
 __author__ = "Jakrin Juangbhanich"

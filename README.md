@@ -65,6 +65,45 @@ Found Water (i=3, j=1): 0.25
 
 #### Docker
 
+You can also run this program as a Docker container. 
+
+1. Ensure that Docker is installed: <https://docs.docker.com/install/>
+
+2. Build the image.
+
+   ```bash
+   # Clone the repo (if you haven't already).
+   git clone https://github.com/krinj/water-overflow.git
+   
+   # Enter the directory (if you haven't already).
+   cd water-overflow
+   
+   # Build Docker image. Here, it is tagged as 'overflow'.
+   docker build -t overflow .
+   ```
+
+3. Run the container. Once the image is built, you can run it normally using the same arguments as the Python CLI above.
+
+   ```bash
+   docker run overflow -i 0 -j 0 -k 3 -v
+   ```
+
+#### Arguments
+
+You can also pass in the `--help` flag for more details about the parameters.
+
+```
+optional arguments:
+  -h, --help            show this help message and exit
+  -i ROW, --row ROW     The row of the glass.
+  -j COL, --col COL     The col of the glass.
+  -k WATER, --water WATER
+                        The amount of water we would like to pour into the top
+                        glass
+  -v, --visualize       Flag for if we want to visualize the tree.
+
+```
+
 ## Analysis
 
 > This is an ad-hoc journal that I will use to document my analysis and thinking as I form a solution to the problem.
@@ -127,6 +166,8 @@ Total Water: 3.0
 ```
 
 #### Run All Tests
+
+The tests on this program are quite bare-bones, but should prove out the basic functionality and provide around 96%+ code coverage on the core module.
 
 ```bash
 # From root directory.
