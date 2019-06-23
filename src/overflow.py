@@ -38,7 +38,7 @@ def illustrate(glass: Glass) -> (int, float):
 
         # We are done.
         if node is None:
-            break
+            continue
 
         # Ensure we have the array.
         while len(levels) < depth + 1:

@@ -35,8 +35,8 @@ class Glass:
 
             # If there is overflow, ensure and fill the child nodes too.
             if overflow > 0:
-                left_child = self._ensure_child(left=True)
-                right_child = self._ensure_child(left=False)
+                left_child = node._ensure_child(left=True)
+                right_child = node._ensure_child(left=False)
                 q.append((left_child, overflow/2))
                 q.append((right_child, overflow/2))
 
@@ -71,7 +71,7 @@ class Glass:
         """ Create the child glass and ensure that all references are set up properly. """
         child = Glass(self.capacity)
 
-        # Bind the child. (That doesn't sound right, does it?)
+        # Bind the child.
         if left:
             child.right_parent = self
             self.left_child = child
@@ -92,9 +92,11 @@ class Glass:
 
         sibling = parent.left_child if left else parent.right_child
         if sibling is None:
-            return
+            sibling = parent._create_child(left)
 
         if left:
             sibling.right_child = self.left_child
+            self.left_child.left_parent = sibling
         else:
             sibling.left_child = self.right_child
+            self.right_child.right_parent = sibling
