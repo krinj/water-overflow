@@ -5,7 +5,7 @@ Wrapper function to calculate the overflow at glass i, j given X litres.
 """
 
 from collections import deque
-from src.glass import Glass
+from .glass import Glass
 
 
 __author__ = "Jakrin Juangbhanich"
@@ -23,8 +23,27 @@ def calculate(i: int=0, j: int=0, k: float=0) -> float:
     root.fill(k)
 
     # Traverse to the (i, j) node.
+    right_steps = j
+    left_steps = i - j
 
-    return 0
+    if j > i:
+        raise Exception(f"Cannot calculate for input (i={i}, j={j}), j cannot be greater than i.")
+
+    n = root
+    while left_steps > 0:
+        n = n.left_child
+        if n is None:
+            return 0
+        left_steps -= 1
+
+    while right_steps > 0:
+        n = n.right_child
+        if n is None:
+            return 0
+        right_steps -= 1
+
+    print(f"Found Water (i={i}, j={j}): {n.water}")
+    return n.water
 
 
 def illustrate(glass: Glass) -> (int, float):

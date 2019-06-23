@@ -41,15 +41,17 @@ class OverFlowTest(unittest.TestCase):
 
     def test_visualize(self):
         """ Visualize the glass graph. """
-        self.root_glass.fill(6)
+        self.root_glass.fill(3)
         n_glasses, total_water = overflow.illustrate(self.root_glass)
-        self.assertEqual(6, total_water)
+        self.assertEqual(3, total_water)
 
     def test_overflow(self):
         dataset = [
             TestData(i=0, j=0, k=0.0, y=0.0),
-            TestData(i=2, j=1, k=1.0, y=0.12),
-            TestData(i=2, j=0, k=1.0, y=0.06)
+            TestData(i=2, j=1, k=1.0, y=0.125),
+            TestData(i=2, j=0, k=1.0, y=0.0625),
+            TestData(i=8, j=6, k=10.0, y=0.1484375),
+            TestData(i=100, j=5, k=1.0, y=0),
         ]
 
         for data in dataset:
@@ -58,6 +60,7 @@ class OverFlowTest(unittest.TestCase):
             self.assertEqual(data.y, result)
 
             # Also check that the water total is correct.
-            self.root_glass.fill(data.k)
-            _, total_water = overflow.illustrate(self.root_glass)
+            glass = Glass()
+            glass.fill(data.k)
+            _, total_water = overflow.illustrate(glass)
             self.assertAlmostEqual(data.k, total_water)
